@@ -28,7 +28,9 @@ FPPFLAGS := -fpp -Wp,-w
 FFLAGS := -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -i4 -r8 -nowarn -sox -traceback $(INC)
 FFLAGS_OPT = -O3 -debug minimal -fp-model source -qoverride-limits
 FFLAGS_DEBUG = -g -O0 -check -check noarg_temp_created -check nopointer -warn -warn noerrors -fpe0 -ftrapuv
-FFLAGS_DEBUG = -g -O0 -traceback 
+#Verify that adding -link_mpi=dbg works on this platform by substituting here:
+#FFLAGS_DEBUG = -g -O0 -check -check noarg_temp_created -check nopointer -warn -warn noerrors -fpe0 -ftrapuv -link_mpi=dbg
+#FFLAGS_DEBUG = -g -O0 -traceback 
 FFLAGS_REPRO = -O2 -debug minimal -fp-model source -qoverride-limits
 FFLAGS_OPENMP = -openmp
 FFLAGS_VERBOSE = -v -V -what
