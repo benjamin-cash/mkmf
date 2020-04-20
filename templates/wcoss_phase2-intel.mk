@@ -18,30 +18,29 @@ LD = mpiifort
 DEBUG =
 REPRO =
 VERBOSE =
-OPENMP = 
+OPENMP =
 
 MAKEFLAGS += --jobs=1
 
 FPPFLAGS := -fpp -Wp,-w
 
+
 FFLAGS := -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -i4 -r8 -nowarn -sox -traceback $(INC)
-FFLAGS_OPT = -O3 -debug minimal -fp-model source
-#FFLAGS_OPT = -O3 -debug minimal -fp-model source -override-limits
+FFLAGS_OPT = -O3 -debug minimal -fp-model source -qoverride-limits
 FFLAGS_DEBUG = -g -O0 -check -check noarg_temp_created -check nopointer -warn -warn noerrors -fpe0 -ftrapuv
-FFLAGS_DEBUG = -g -O0 -traceback 
-FFLAGS_REPRO = -O2 -debug minimal -fp-model source
-#FFLAGS_REPRO = -O2 -debug minimal -fp-model source -override-limits
-#FFLAGS_REPRO = -g -O0 -check -check noarg_temp_created -check nopointer -warn -warn noerrors -fpe0 -ftrapuv
-FFLAGS_OPENMP = -qopenmp
+#Verify that adding -link_mpi=dbg works on this platform by substituting here:
+#FFLAGS_DEBUG = -g -O0 -check -check noarg_temp_created -check nopointer -warn -warn noerrors -fpe0 -ftrapuv -link_mpi=dbg
+#FFLAGS_DEBUG = -g -O0 -traceback 
+FFLAGS_REPRO = -O2 -debug minimal -fp-model source -qoverride-limits
+FFLAGS_OPENMP = -openmp
 FFLAGS_VERBOSE = -v -V -what
 
 CFLAGS := -D__IFC -sox -traceback $(INC)
 CFLAGS_OPT = -O2 -debug minimal
-CFLAGS_OPENMP = -qopenmp
+CFLAGS_OPENMP = -openmp
 CFLAGS_DEBUG = -O0 -g -ftrapuv
 
-LDFLAGS := $(shell nf-config --flibs)
-LDFLAGS_OPENMP := -qopenmp
+LDFLAGS_OPENMP := -openmp
 LDFLAGS_VERBOSE := -Wl,-V,--verbose,-cref,-M
 
 # start with blank LIBS
@@ -83,10 +82,11 @@ else
   LIBS += -lnetcdf
 endif
 
-FFLAGS += -I/usrx/local/prod/packages/ips/18.0.1/netcdf/4.5.0/include
-CFLAGS += -I/usrx/local/prod/packages/ips/18.0.1/netcdf/4.5.0/include
+FFLAGS += -I/usrx/local/NetCDF/4.2/serial/include
+CFLAGS += -I/usrx/local/NetCDF/4.2/serial/include
 
 LIBS +=
+LIBS += -lmkl_blas95_lp64 -lmkl_lapack95_lp64 -lmkl_intel_lp64 -lmkl_core -lmkl_sequential
 LDFLAGS += $(LIBS)
 
 #---------------------------------------------------------------------------
